@@ -4,10 +4,12 @@ export class Book {
     readonly id: string,
     readonly title: string,
     readonly author: string,
+    readonly publisher: string
   ) {}
 
-  public static create(id: string, title: string, author: string): Book {
-    return new Book(id, title, author);
+  public static create(id: string, title: string, author: string, publisher: string): Book {
+    this.validateTitle(title);
+    return new Book(id, title, author, publisher);
   }
 
   public static validate(book: Book): void {
@@ -27,6 +29,9 @@ export class Book {
     return "This is a title" + title;
   }
 
+  isPublisherBirthday(publisher: string): boolean {
+    return publisher === "Birthday";
+  }
 
 
 }
