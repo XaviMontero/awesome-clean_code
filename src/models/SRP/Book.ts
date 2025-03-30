@@ -1,15 +1,22 @@
+import { DomainEvent, EventBus } from "../../event/EventBus";
 
-export class Book {
+export class Book extends DomainEvent {
   constructor(
     readonly id: string,
     readonly title: string,
     readonly author: string,
     readonly publisher: string
-  ) {}
+  ) {
+    super();
+  }
 
   public static create(id: string, title: string, author: string, publisher: string): Book {
     this.validateTitle(title);
-    return new Book(id, title, author, publisher);
+    const b = new Book(id, title, author, publisher);
+
+    const eventBus = EventBus.getInstance();
+    eventBus.publish(b);
+    return b;
   }
 
   public static validate(book: Book): void {

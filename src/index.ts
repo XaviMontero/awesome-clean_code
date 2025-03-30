@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { createVideo } from './controllers/videoController';
+import { createBook } from './controllers/bookController';
 import { configureEventSubscriptions } from './config/eventConfig';
 
 // Load environment variables
@@ -23,6 +24,10 @@ app.get('/', (req, res) => {
 
 // Create video endpoint
 app.post('/videos', createVideo);
+
+
+// Create book endpoint
+app.post('/books', createBook);
 
 // Start server
 app.listen(port, () => {
