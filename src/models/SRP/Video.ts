@@ -1,5 +1,4 @@
 import { DomainEvent, EventBus } from "../../event/EventBus";
-import { NotificationService } from "./NotificationService";
 
 export class Video extends DomainEvent {
   constructor(
@@ -15,14 +14,12 @@ export class Video extends DomainEvent {
     id: string,
     title: string,
     author: string,
-    publisher: string,
-    notificationService: NotificationService
+    publisher: string
   ): Video {
     const v = new Video(id, title, author, publisher);
 
-    // Configuramos el sistema usando la instancia singleton
+    // Publicamos el evento
     const eventBus = EventBus.getInstance();
-    eventBus.subscribe("Video", notificationService);
     eventBus.publish(v);
 
     return v;

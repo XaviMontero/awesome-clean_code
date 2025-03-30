@@ -1,9 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { createVideo } from './controllers/videoController';
+import { configureEventSubscriptions } from './config/eventConfig';
 
 // Load environment variables
 dotenv.config();
+
+// Configure event subscriptions
+configureEventSubscriptions();
 
 const app = express();
 const port = process.env.PORT || 3000;

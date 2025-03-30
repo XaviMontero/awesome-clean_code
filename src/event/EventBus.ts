@@ -12,6 +12,7 @@ export abstract class DomainEvent {
 export class EventBus {
   private static instance: EventBus;
   private listeners: Map<string, EventListener[]> = new Map();
+  private configured: boolean = false;
 
   private constructor() {}
 
@@ -26,14 +27,35 @@ export class EventBus {
     if (!this.listeners.has(eventName)) {
       this.listeners.set(eventName, []);
     }
-    this.listeners.get(eventName)!.push(listener);
+
+    // Evitar duplicados
+    const existingListeners = this.listeners.get(eventName)!;
+    if (!existingListeners.some(l => l.constructor.name === listener.constructor.name)) {
+      existingListeners.push(listener);
+      console.log(`✅ Subscribed ${listener.constructor.name} to ${eventName}`);
+    }
   }
 
   publish(event: DomainEvent) {
     const eventName = event.constructor.name;
     const eventListeners = this.listeners.get(eventName) || [];
+
+    if (eventListeners.length === 0) {
+      console.log(`⚠️ No listeners found for event: ${eventName}`);
+      return;
+    }
+
+    console.log(`📢 Publishing event: ${eventName} to ${eventListeners.length} listeners`);
     for (const listener of eventListeners) {
       listener.handle(event);
     }
+  }
+
+  isConfigured(): boolean {
+    return this.configured;
+  }
+
+  markAsConfigured() {
+    this.configured = true;
   }
 }

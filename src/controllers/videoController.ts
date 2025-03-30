@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Video } from '../models/SRP/Video';
 import { CreateVideoDto } from '../models/SRP/dto/CreateVideoDto';
-import { SentNotificationUserVideo } from '../models/SRP/SentNotificationUserVideo';
 
 export const createVideo = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -14,13 +13,11 @@ export const createVideo = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    const notificationService = new SentNotificationUserVideo();
     const video = Video.create(
       videoData.id,
       videoData.title,
       videoData.author,
-      videoData.publisher,
-      notificationService
+      videoData.publisher
     );
 
     res.status(201).json({
