@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { createVideo } from './controllers/videoController';
 
 // Load environment variables
 dotenv.config();
@@ -15,6 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the TypeScript Backend API!' });
 });
+
+// Create video endpoint
+app.post('/videos', createVideo);
 
 // Start server
 app.listen(port, () => {
