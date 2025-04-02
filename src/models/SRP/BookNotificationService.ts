@@ -8,7 +8,7 @@ export class BookNotificationService implements NotificationService {
   }
 
   notify(event: DomainEvent): void {
-    console.log('\n=== EVENTO DE NOTIFICACIÓN DE USUARIO ===');
+    console.log('\n=== EVENTO DE NOTIFICACIÓN DE BOOK ===');
     console.log('Timestamp:', new Date().toISOString());
     console.log('Evento:', event.constructor.name);
     console.log('Datos del evento:', JSON.stringify(event, null, 2));

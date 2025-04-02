@@ -1,6 +1,26 @@
 import { Request, Response } from 'express';
 import { Book } from '../models/SRP/Book';
 import { CreateBookDto } from '../models/SRP/dto/CreateBookDto';
+import { RedisBookRepository } from '../db/RedisBookRepository';
+import { BookRepository } from '../db/BookRepository';
+import { MysqlBookRepository } from '../db/MysqBookRepository';
+
+class BookService {
+  private readonly mysqlRepo: BookRepository;
+  private readonly redisRepo: BookRepository;
+
+  constructor() {
+    this.mysqlRepo = new MysqlBookRepository();
+    this.redisRepo = new RedisBookRepository();
+  }
+
+  async createBook(book: Book): Promise<void> {
+    await this.mysqlRepo.create(book);
+    await this.redisRepo.create(book);
+  }
+}
+
+const bookService = new BookService();
 
 export const createBook = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -19,6 +39,8 @@ export const createBook = async (req: Request, res: Response): Promise<void> => 
       bookData.author,
       bookData.publisher
     );
+
+    await bookService.createBook(book);
 
     res.status(201).json({
       message: 'Libro creado exitosamente',

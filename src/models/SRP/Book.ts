@@ -13,7 +13,7 @@ export class Book extends DomainEvent {
   public static create(id: string, title: string, author: string, publisher: string): Book {
     this.validateTitle(title);
     const b = new Book(id, title, author, publisher);
-
+    this.validate(b);
     const eventBus = EventBus.getInstance();
     eventBus.publish(b);
     return b;
